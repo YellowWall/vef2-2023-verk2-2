@@ -29,7 +29,8 @@
     <form method="post" action="/<%= event.slug %>" enctype="application/x-www-form-urlencoded" class="">
       <div class="field field--input<%= locals.isInvalid('name', errors) ?  ' field--invalid' : '' %>">
         <label for="name">Nafn*:</label>
-        <input type="text" name="name" id="name" value= <%=user.name%> >
+        
+        <p><strong><%=user.name%></strong></p>
       </div>
 
       <div class="field field--textarea<%= locals.isInvalid('comment', errors) ?  ' field--invalid' : '' %>">

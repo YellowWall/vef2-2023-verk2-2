@@ -73,7 +73,7 @@ const registerValidation = [
       return Promise.resolve();
   }),
 ];
-async function validationCheck(req,res,next){
+async function validationCheck(req,res){
   const {name,username,password} = req.body;
   const validation = validationResult(req);
   let error = [];

@@ -56,7 +56,26 @@ export async function dropSchema(dropFile = DROP_SCHEMA_FILE) {
 
   return query(data.toString('utf-8'));
 }
+/*
+async function dontBeADick(arr){
+  const droptest = /drop.*table/;
+  
+  try{
+    if(arr.length()>0 ){
+      for (const item of arr){
+        if(droptest.test(item)){
+          console.log("we don't take kindly to drop table shenanigans round these parts");
+          return false;
+        }
+      }
+  }return true;
+}catch(e){
+  console.error("Input þarf að vera í formi fylkis")
+  return false;
+}
 
+}
+*/
 export async function createEvent({ name, slug, description } = {}) {
   const q = `
     INSERT INTO events
@@ -77,6 +96,7 @@ export async function createEvent({ name, slug, description } = {}) {
 
 // Updatear ekki description, erum ekki að útfæra partial update
 export async function updateEvent(id, { name, slug, description } = {}) {
+  
   const q = `
     UPDATE events
       SET
@@ -98,23 +118,64 @@ export async function updateEvent(id, { name, slug, description } = {}) {
   return null;
 }
 
-export async function register({ name, comment, event } = {}) {
-  const q = `
-    INSERT INTO registrations
-      (name, comment, event)
-    VALUES
-      ($1, $2, $3)
-    RETURNING
+export async function register({ user, comment, event } = {}) {
+  if(!user){
+    return null;
+  }
+  const test = `
+    SELECT 1 
+    FROM 
+      events
+    WHERE 
+      id = $1;`;
+  const exist = await query(test,[event]);
+  if(!exist){
+    return null;
+  }
+  const test2 =`
+    SELECT 1
+    FROM
+      registrations
+    WHERE
+      id = $1 AND username = $2;
+      `;
+  const reged = await query(test2,[event,user.username]);
+  const values = [user.name,user.username, comment, event];
+  if(reged && reged.rowCount === 0){
+    const q = `
+      INSERT INTO registrations
+        (name, username, comment, event)
+      VALUES
+        ($1, $2, $3, $4)
+      RETURNING
+        id, name, comment, event;
+    `;
+    const result = await query(q, values);
+    if (result && result.rowCount === 1) {
+      return result.rows[0];
+    }
+  
+    return null;
+  }
+  if(reged){
+  const q = `UPDATE registrations
+    SET
+      name = $1,
+      comment = $3
+    WHERE
+      id = $4 AND username = $2
+    RETURNING 
       id, name, comment, event;
-  `;
-  const values = [name, comment, event];
+    `;
   const result = await query(q, values);
-
   if (result && result.rowCount === 1) {
     return result.rows[0];
   }
-
   return null;
+}
+return null;  
+
+
 }
 
 export async function listEvents() {

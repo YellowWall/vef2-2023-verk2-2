@@ -4,7 +4,7 @@ import xss from 'xss';
 // Endurnýtum mjög líka validation
 
 export function registrationValidationMiddleware(textField) {
-  return [
+  return [/*
     body('name')
       .trim()
       .isLength({ min: 1 })
@@ -12,6 +12,7 @@ export function registrationValidationMiddleware(textField) {
     body('name')
       .isLength({ max: 64 })
       .withMessage('Nafn má að hámarki vera 64 stafir'),
+      */
     body(textField)
       .isLength({ max: 400 })
       .withMessage(

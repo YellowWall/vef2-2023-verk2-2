@@ -162,7 +162,7 @@ async function eventRoute(req, res, next) {
     data: { name: event.name, description: event.description },
   });
 }
-
+adminRouter.get('/del',)
 adminRouter.get('/', ensureLoggedIn, catchErrors(index));
 adminRouter.post(
   '/',

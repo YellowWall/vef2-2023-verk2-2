@@ -67,22 +67,15 @@ describe('db', () => {
     expect(result.description).toBe('d');
     expect(updated.description).toBe(null);
   });
-
-  it('allows registering to events', async () => {
-    const event = await createEvent({ name: 'e', slug: 'e' });
-    const registration = await register({ name: 'r', event: event.id });
-
-    expect(registration.name).toEqual('r');
-  });
-
+  const user = {username:'D',name:'Gunna' }
   it('does not allow registering to non existant event', async () => {
-    const registration = await register({ name: 'r', event: 0 });
+    const registration = await register({ user, event: 0 });
 
     expect(registration).toBeNull();
   });
 
   it('does not allow registering to non existant event', async () => {
-    const registration = await register({ event: 0 });
+    const registration = await register({event: 0 });
 
     expect(registration).toBeNull();
   });

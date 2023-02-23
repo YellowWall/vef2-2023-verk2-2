@@ -57,6 +57,7 @@ async function eventRegisteredRoute(req, res) {
 
 async function validationCheck(req, res, next) {
   const { name, comment } = req.body;
+  const {user} = req;
 
   // TODO tvítekning frá því að ofan
   const { slug } = req.params;
@@ -77,6 +78,7 @@ async function validationCheck(req, res, next) {
       event,
       registered,
       errors: validation.errors,
+      user
     });
   }
 
@@ -84,12 +86,12 @@ async function validationCheck(req, res, next) {
 }
 
 async function registerRoute(req, res) {
-  const { name, comment } = req.body;
+  const { comment } = req.body;
   const { slug } = req.params;
   const event = await listEvent(slug);
-
+  const {user} = req;
   const registered = await register({
-    name,
+    user,
     comment,
     event: event.id,
   });
