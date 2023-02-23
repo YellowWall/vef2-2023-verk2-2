@@ -7,6 +7,8 @@ import {
   end,
   register,
   updateEvent,
+  removeEvent,
+  listEventByName
 } from '../lib/db';
 
 dotenv.config({ path: './.env.test' });
@@ -79,4 +81,9 @@ describe('db', () => {
 
     expect(registration).toBeNull();
   });
+  it('does not allow events to be deleted', async () =>{
+    await removeEvent({name: 'two'});
+    const test = await listEventByName({name: 'two'});
+    expect(test).toBeNull();
+  })
 });

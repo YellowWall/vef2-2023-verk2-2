@@ -117,6 +117,19 @@ export async function updateEvent(id, { name, slug, description } = {}) {
 
   return null;
 }
+export async function removeEvent({event}={}) {
+  if(!event){
+    return null;
+  }
+  const q =  `
+    DELETE 
+    FROM 
+      events 
+    WHERE 
+      id = $1;`;
+  await query(q,[event.id]);
+  return null;
+}
 
 export async function register({ user, comment, event } = {}) {
   if(!user){
