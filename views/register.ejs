@@ -1,0 +1,32 @@
+<%- include('header') -%>
+
+<h1><%= title %></h1>
+
+<form class="form" method="post" action="/register" autocomplete="off">
+
+  <div class="field">
+    <label for="name">Nafn</label>
+    <input type="text" name="name" id="name">
+  </div>
+  <div class="field">
+    <label for="username">Notendanafn</label>
+    <input type="text" name="username" id="username">
+  </div>
+
+  <div class="field">
+    <label for="password">Lykilorð</label>
+    <input type="password" name="password" id="password">
+  </div>
+  <% if (errors.length > 0) { %>
+    <h3 class="errors__title">Villur við skráningu:</h3>
+    <ul class="errors">
+      <% errors.forEach((error) => { %>
+        <li class="error"><label for="<%= error.param %>"><%= error.msg %></label></li>
+      <% }); %>
+    </ul>
+  <% } %>
+
+  <button class="button">Innskrá</button>
+</form>
+
+<%- include('footer') -%>

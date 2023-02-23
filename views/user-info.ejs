@@ -1,0 +1,12 @@
+<% if (user) { %>
+  <div class="user">
+    <p class="user__loggedin">Innskráður sem: <strong><%= user.username %></strong></p>
+    <p class="user__logout"><a href="/logout">Útskrá</a></p>
+  </div>
+<% } %>
+<% if (!user) {%>
+<div class="link">
+  <a class="link__link" href="/login">Innskráning</a>
+  <a class="link__link" href="/register">Nýskráning</a>
+</div>
+<% }%>
